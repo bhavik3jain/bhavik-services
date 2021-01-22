@@ -1,0 +1,11 @@
+postgres:
+  image: postgres:latest
+  ports:
+    - '5432:5432'
+  environment:
+    POSTGRES_USER: 'covid19_user_master'
+    POSTGRES_PASSWORD: 'covid19_password_master'
+    POSTGRES_DB: 'covid19_database'
+  container_name: 'covid19_database'
+  volumes:
+    - ./init:/docker-entrypoint-initdb.d/
