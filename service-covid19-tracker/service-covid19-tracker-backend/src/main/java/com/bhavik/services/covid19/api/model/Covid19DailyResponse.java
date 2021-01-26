@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Covid19DataResponse {
+public class Covid19DailyResponse {
 
 	private LocalDate date;
 	private String state;
@@ -13,11 +13,11 @@ public class Covid19DataResponse {
 	private Integer deathIncrease;
 	private Integer hospitalizedIncrease;
 
-	public Covid19DataResponse() {
+	public Covid19DailyResponse() {
 		//Empty Constructor
 	}
 
-	public Covid19DataResponse(LocalDate date, String state, Integer positiveIncrease, Integer deathIncrease, Integer hospitalizedIncrease) {
+	public Covid19DailyResponse(LocalDate date, String state, Integer positiveIncrease, Integer deathIncrease, Integer hospitalizedIncrease) {
 		this.date = date;
 		this.state = state;
 		this.positiveIncrease = positiveIncrease;

@@ -1,12 +1,16 @@
 package com.bhavik.services.covid19.impl.service;
 
 import com.bhavik.services.covid19.api.model.Covid19AnalyticsResponse;
-import com.bhavik.services.covid19.api.model.Covid19DataRequest;
-import com.bhavik.services.covid19.api.model.Covid19DataResponse;
+import com.bhavik.services.covid19.api.model.Covid19CreateRequest;
+import com.bhavik.services.covid19.api.model.Covid19DailyResponse;
 import com.bhavik.services.covid19.api.model.Covid19DataEntity;
+import com.bhavik.services.covid19.api.model.getdata.request.Covid19DataRequest;
+import com.bhavik.services.covid19.api.model.getdata.response.Covid19DataResponse;
 import com.bhavik.services.covid19.api.repository.Covid19DataRepository;
 import com.bhavik.services.covid19.api.service.ICovid19DataService;
 import com.bhavik.services.covid19.impl.util.Covid19DataConverter;
+import com.bhavik.services.covid19.impl.util.Covid19DataResponseGenerator;
+import com.bhavik.services.covid19.impl.util.DateUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,19 +34,28 @@ public class Covid19DataService implements ICovid19DataService {
 	@Autowired
 	private Covid19DataRepository covid19DataRepository;
 
+	@Autowired
+	private Covid19DataResponseGenerator generator;
+
+	@Autowired
+	private Covid19DataConverter dataConverter;
+
+	@Autowired
+	private DateUtils dateUtils;
+
 	@Override
-	public List<Covid19DataResponse> getAllCovid19Data() {
+	public List<Covid19DailyResponse> getAllCovid19Data() {
 		List<Covid19DataEntity> covid19DataEntities = covid19DataRepository.findAll();
 
 		return covid19DataEntities.stream()
-				.map(Covid19DataConverter::convertFromEntity)
+				.map(dataConverter::convertFromEntity)
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public void createCovid19Data(List<Covid19DataRequest> requestData) {
+	public void createCovid19Data(List<Covid19CreateRequest> requestData) {
 		List<Covid19DataEntity> covid19DataEntities = requestData.stream()
-				.map(Covid19DataConverter::convertToEntity)
+				.map(dataConverter::convertToEntity)
 				.collect(Collectors.toList());
 
 		Collection<Covid19DataEntity> existingData = covid19DataRepository.findAllCovidDataByState(requestData.get(0).getState());
@@ -63,20 +79,55 @@ public class Covid19DataService implements ICovid19DataService {
 	@Override
 	public Covid19AnalyticsResponse getCovid19Analytics(String date) {
 		logger.debug("Reading covid analytics from database");
-		List<Object[]> data;
+		List<Map> data;
 		if(StringUtils.isEmpty(date)) {
 			logger.debug("Date was not passed in, will read current analytics");
 			data = covid19DataRepository.findCurrentCovidAnalytics();
 		} else {
 			logger.debug("Retrieving analytics for {} date", date);
-			data = covid19DataRepository.findCovidAnalyticsByDate(date);
+			data = covid19DataRepository.findCovidAnalyticsByDates(Collections.singletonList(date));
 		}
 		if(CollectionUtils.isEmpty(data)) {
 			logger.info("No data exists for the following date: {}", date);
 			return null;
 		}
 
-		return Covid19DataConverter.createCovid19AnalyticsResponse(data.get(0));
+		return dataConverter.createCovid19AnalyticsResponse(data.get(0));
+	}
+
+	@Override
+	public Covid19DataResponse getCovid19AnalyticsData(Covid19DataRequest dataRequest) {
+		List<String> dates = dateUtils.resolveDateRange(dataRequest.getWhere().getDateRange());
+		if(!CollectionUtils.isEmpty(dates)) {
+			logger.debug("Retrieving analytics for the following dates {}", dates);
+			List<Map> data = covid19DataRepository.findCovidAnalyticsByDates(dates);
+
+			Covid19DataResponse response = generator.createCovid19DataResponse(dataRequest, data);
+
+			response.getTotalCases().sort((c1, c2) -> {
+				LocalDate ld1 = dateUtils.dateComparisonConverter(c1.getDate());
+				LocalDate ld2 = dateUtils.dateComparisonConverter(c2.getDate());
+
+				return ld1.compareTo(ld2);
+			});
+
+			response.getTotalDeaths().sort((c1, c2) -> {
+				LocalDate ld1 = dateUtils.dateComparisonConverter(c1.getDate());
+				LocalDate ld2 = dateUtils.dateComparisonConverter(c2.getDate());
+
+				return ld1.compareTo(ld2);
+			});
+
+			response.getTotalHospitalizations().sort((c1, c2) -> {
+				LocalDate ld1 = dateUtils.dateComparisonConverter(c1.getDate());
+				LocalDate ld2 = dateUtils.dateComparisonConverter(c2.getDate());
+
+				return ld1.compareTo(ld2);
+			});
+
+			return response;
+		}
+		return null;
 	}
 
 }

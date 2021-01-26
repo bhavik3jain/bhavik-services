@@ -1,8 +1,10 @@
 package com.bhavik.services.covid19.api.controller;
 
 import com.bhavik.services.covid19.api.model.Covid19AnalyticsResponse;
-import com.bhavik.services.covid19.api.model.Covid19DataRequest;
-import com.bhavik.services.covid19.api.model.Covid19DataResponse;
+import com.bhavik.services.covid19.api.model.Covid19CreateRequest;
+import com.bhavik.services.covid19.api.model.Covid19DailyResponse;
+import com.bhavik.services.covid19.api.model.getdata.request.Covid19DataRequest;
+import com.bhavik.services.covid19.api.model.getdata.response.Covid19DataResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +14,15 @@ import java.util.List;
 public interface ICovid19DataController {
 
     @GetMapping(path = "/")
-    List<Covid19DataResponse> getAllCovid19Data();
+    List<Covid19DailyResponse> getAllCovid19Data();
 
     @PostMapping(path = "/multi_create")
-    ResponseEntity<String> createCovid19Data(@RequestBody List<Covid19DataRequest> requestData);
+    ResponseEntity<String> createCovid19Data(@RequestBody List<Covid19CreateRequest> requestData);
 
     @GetMapping(path = "/read_analytics")
-    Covid19AnalyticsResponse getCovid19Analytics(@RequestParam(value = "date", required = false) String date);
+    Covid19AnalyticsResponse getCovid19AnalyticsByDate(@RequestParam(value = "date", required = false) String date);
+
+    @PostMapping(path = "/analytics/multi_read")
+    Covid19DataResponse getCovid19AnalyticsData(@RequestBody Covid19DataRequest dataRequest);
 
 }

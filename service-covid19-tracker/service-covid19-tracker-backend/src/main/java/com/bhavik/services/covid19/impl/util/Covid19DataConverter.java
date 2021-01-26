@@ -1,21 +1,23 @@
 package com.bhavik.services.covid19.impl.util;
 
-import com.bhavik.services.covid19.api.model.Covid19AnalyticsResponse;
-import com.bhavik.services.covid19.api.model.Covid19DataRequest;
-import com.bhavik.services.covid19.api.model.Covid19DataResponse;
-import com.bhavik.services.covid19.api.model.Covid19DataEntity;
+import com.bhavik.services.covid19.api.model.*;
+import com.bhavik.services.covid19.api.model.getdata.response.Covid19DailyAggregate;
+import com.bhavik.services.covid19.api.model.getdata.response.Covid19DataResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
+@Component
 public class Covid19DataConverter {
 
-    private Covid19DataConverter() {
-        //Adding default constructor
-    }
+    @Autowired
+    private DateUtils dateUtils;
 
-    public static Covid19DataResponse convertFromEntity(Covid19DataEntity entity) {
-        return new Covid19DataResponse(
+    public Covid19DailyResponse convertFromEntity(Covid19DataEntity entity) {
+        return new Covid19DailyResponse(
                 LocalDate.now(),
                 entity.getState(),
                 entity.getPositiveIncrease(),
@@ -25,7 +27,7 @@ public class Covid19DataConverter {
 
     }
 
-    public static Covid19DataEntity convertToEntity(Covid19DataRequest from) {
+    public Covid19DataEntity convertToEntity(Covid19CreateRequest from) {
         Covid19DataEntity to = new Covid19DataEntity();
         to.setTotalTestsPeopleViral(from.getTotalTestsPeopleViral());
         to.setState(from.getState());
@@ -71,24 +73,13 @@ public class Covid19DataConverter {
         return to;
     }
 
-    public static String dateConverter(String dbDate) {
-        SimpleDateFormat fromUser = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat myFormat = new SimpleDateFormat("MMMM dd yyyy");
-
-        try {
-            return myFormat.format(fromUser.parse(dbDate));
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static Covid19AnalyticsResponse createCovid19AnalyticsResponse(Object[] data) {
+    public Covid19AnalyticsResponse createCovid19AnalyticsResponse(Map data) {
         Covid19AnalyticsResponse response = new Covid19AnalyticsResponse();
 
-        response.setDate(data[0] != null ? dateConverter(String.valueOf(data[0])) : null);
-        response.setPositiveIncrease(data[1] != null ? Integer.valueOf(String.valueOf(data[1])) : null);
-        response.setHospitalizedIncrease(data[2] != null ? Integer.valueOf(String.valueOf(data[2])) : null);
-        response.setDeathIncrease(data[3] != null ? Integer.valueOf(String.valueOf(data[3])) : null);
+        response.setDate(data.get(Covid19DataType.DATE.getTypeName()) != null ? dateUtils.dateConverter(String.valueOf(data.get(Covid19DataType.DATE.getTypeName()))) : null);
+        response.setPositiveIncrease(data.get(Covid19DataType.CASES.getTypeName()) != null ? Integer.valueOf(String.valueOf(data.get(Covid19DataType.CASES.getTypeName()))) : null);
+        response.setHospitalizedIncrease(data.get(Covid19DataType.HOSPITALIZED.getTypeName()) != null ? Integer.valueOf(String.valueOf(data.get(Covid19DataType.HOSPITALIZED.getTypeName()))) : null);
+        response.setDeathIncrease(data.get(Covid19DataType.DEATHS.getTypeName()) != null ? Integer.valueOf(String.valueOf(data.get(Covid19DataType.DEATHS.getTypeName()))) : null);
 
         return response;
     }

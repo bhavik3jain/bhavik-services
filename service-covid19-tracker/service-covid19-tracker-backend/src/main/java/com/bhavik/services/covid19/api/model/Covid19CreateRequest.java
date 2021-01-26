@@ -1,6 +1,6 @@
 package com.bhavik.services.covid19.api.model;
 
-public class Covid19DataRequest {
+public class Covid19CreateRequest {
 
     private String date;
     private String dataQualityGrade;
