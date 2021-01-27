@@ -1,6 +1,6 @@
 package com.bhavik.services.covid19.api.repository;
 
-import com.bhavik.services.covid19.api.model.Covid19DataEntity;
+import com.bhavik.services.covid19.api.model.entity.Covid19DataEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,4 +1,4 @@
-package com.bhavik.services.covid19.api.model;
+package com.bhavik.services.covid19.api.model.entity;
 
 import javax.persistence.*;
 

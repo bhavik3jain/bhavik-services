@@ -1,13 +1,11 @@
 package com.bhavik.services.covid19.impl.util;
 
 import com.bhavik.services.covid19.api.model.*;
-import com.bhavik.services.covid19.api.model.getdata.response.Covid19DailyAggregate;
-import com.bhavik.services.covid19.api.model.getdata.response.Covid19DataResponse;
+import com.bhavik.services.covid19.api.model.entity.Covid19DataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 @Component

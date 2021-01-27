@@ -3,7 +3,7 @@ package com.bhavik.services.covid19.impl.service;
 import com.bhavik.services.covid19.api.model.Covid19AnalyticsResponse;
 import com.bhavik.services.covid19.api.model.Covid19CreateRequest;
 import com.bhavik.services.covid19.api.model.Covid19DailyResponse;
-import com.bhavik.services.covid19.api.model.Covid19DataEntity;
+import com.bhavik.services.covid19.api.model.entity.Covid19DataEntity;
 import com.bhavik.services.covid19.api.model.getdata.request.Covid19DataRequest;
 import com.bhavik.services.covid19.api.model.getdata.response.Covid19DataResponse;
 import com.bhavik.services.covid19.api.repository.Covid19DataRepository;
