@@ -43,4 +43,10 @@ CREATE SCHEMA covid19_data
     total_tests_viral INTEGER,
     PRIMARY KEY(date, state)
   )
+  CREATE TABLE IF NOT EXISTS covid19_states(
+    id SERIAL,
+    state TEXT NOT NULL,
+    name TEXT NOT NULL,
+    PRIMARY KEY(state)
+  )
 ;
