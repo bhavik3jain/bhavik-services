@@ -4,9 +4,11 @@ import com.bhavik.services.covid19.api.model.Covid19AnalyticsResponse;
 import com.bhavik.services.covid19.api.model.Covid19CreateRequest;
 import com.bhavik.services.covid19.api.model.Covid19DailyResponse;
 import com.bhavik.services.covid19.api.model.entity.Covid19DataEntity;
+import com.bhavik.services.covid19.api.model.entity.Covid19StatesEntity;
 import com.bhavik.services.covid19.api.model.getdata.request.Covid19DataRequest;
 import com.bhavik.services.covid19.api.model.getdata.response.Covid19DataResponse;
 import com.bhavik.services.covid19.api.repository.Covid19DataRepository;
+import com.bhavik.services.covid19.api.repository.Covid19StateRepository;
 import com.bhavik.services.covid19.api.service.ICovid19DataService;
 import com.bhavik.services.covid19.impl.util.Covid19DataConverter;
 import com.bhavik.services.covid19.impl.util.Covid19DataResponseGenerator;
@@ -33,6 +35,9 @@ public class Covid19DataService implements ICovid19DataService {
 
 	@Autowired
 	private Covid19DataRepository covid19DataRepository;
+
+	@Autowired
+	private Covid19StateRepository covid19StateRepository;
 
 	@Autowired
 	private Covid19DataResponseGenerator generator;
@@ -77,15 +82,18 @@ public class Covid19DataService implements ICovid19DataService {
 	}
 
 	@Override
-	public Covid19AnalyticsResponse getCovid19Analytics(String date) {
+	public Covid19AnalyticsResponse getCovid19Analytics(String date, String state) {
 		logger.debug("Reading covid analytics from database");
 		List<Map> data;
+
+		List<String> statesToRetrieve = getStates(state);
+
 		if(StringUtils.isEmpty(date)) {
 			logger.debug("Date was not passed in, will read current analytics");
-			data = covid19DataRepository.findCurrentCovidAnalytics();
+			data = covid19DataRepository.findCurrentCovidAnalytics(statesToRetrieve);
 		} else {
 			logger.debug("Retrieving analytics for {} date", date);
-			data = covid19DataRepository.findCovidAnalyticsByDates(Collections.singletonList(date));
+			data = covid19DataRepository.findCovidAnalyticsByDates(Collections.singletonList(date), statesToRetrieve);
 		}
 		if(CollectionUtils.isEmpty(data)) {
 			logger.info("No data exists for the following date: {}", date);
@@ -98,9 +106,11 @@ public class Covid19DataService implements ICovid19DataService {
 	@Override
 	public Covid19DataResponse getCovid19AnalyticsData(Covid19DataRequest dataRequest) {
 		List<String> dates = dateUtils.resolveDateRange(dataRequest.getWhere().getDateRange());
+		List<String> statesToRetrieve = getStates(StringUtils.upperCase(dataRequest.getSelect().getState()));
+
 		if(!CollectionUtils.isEmpty(dates)) {
 			logger.debug("Retrieving analytics for the following dates {}", dates);
-			List<Map> data = covid19DataRepository.findCovidAnalyticsByDates(dates);
+			List<Map> data = covid19DataRepository.findCovidAnalyticsByDates(dates, statesToRetrieve);
 
 			Covid19DataResponse response = generator.createCovid19DataResponse(dataRequest, data);
 
@@ -118,7 +128,7 @@ public class Covid19DataService implements ICovid19DataService {
 				return ld1.compareTo(ld2);
 			});
 
-			response.getTotalHospitalizations().sort((c1, c2) -> {
+			response.getCurrentHospitalizations().sort((c1, c2) -> {
 				LocalDate ld1 = dateUtils.dateComparisonConverter(c1.getDate());
 				LocalDate ld2 = dateUtils.dateComparisonConverter(c2.getDate());
 
@@ -128,6 +138,19 @@ public class Covid19DataService implements ICovid19DataService {
 			return response;
 		}
 		return null;
+	}
+
+	private List<String> getStates(String state) {
+		List<String> statesToRetrieve;
+
+		if(StringUtils.isEmpty(state)) {
+			List<Covid19StatesEntity> statesEntities = covid19StateRepository.findAll();
+			statesToRetrieve = statesEntities.stream().map(Covid19StatesEntity::getState).collect(Collectors.toList());
+		} else {
+			statesToRetrieve = Collections.singletonList(state);
+		}
+
+		return statesToRetrieve;
 	}
 
 }

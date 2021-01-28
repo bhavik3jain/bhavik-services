@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +65,7 @@ public class Covid19DataResponseGenerator {
                 aggregate.setDate(date);
             }
 
-            response.getTotalHospitalizations().add(aggregate);
+            response.getCurrentHospitalizations().add(aggregate);
         });
 
         dataFunctions.putIfAbsent(Covid19DataType.CASES, addTotalCases);

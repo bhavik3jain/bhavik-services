@@ -14,7 +14,7 @@ public interface ICovid19DataService {
 
     void createCovid19Data(List<Covid19CreateRequest> requestData);
 
-    Covid19AnalyticsResponse getCovid19Analytics(String date);
+    Covid19AnalyticsResponse getCovid19Analytics(String date, String state);
 
     Covid19DataResponse getCovid19AnalyticsData(Covid19DataRequest dataRequest);
 }

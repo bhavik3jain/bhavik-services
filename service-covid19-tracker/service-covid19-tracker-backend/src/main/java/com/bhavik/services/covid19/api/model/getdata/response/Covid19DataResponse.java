@@ -7,7 +7,7 @@ public class Covid19DataResponse {
 
     private List<Covid19DailyAggregate> totalCases = new ArrayList<>();
     private List<Covid19DailyAggregate> totalDeaths = new ArrayList<>();
-    private List<Covid19DailyAggregate> totalHospitalizations = new ArrayList<>();
+    private List<Covid19DailyAggregate> currentHospitalizations = new ArrayList<>();
 
     public List<Covid19DailyAggregate> getTotalCases() {
         return totalCases;
@@ -25,11 +25,11 @@ public class Covid19DataResponse {
         this.totalDeaths = totalDeaths;
     }
 
-    public List<Covid19DailyAggregate> getTotalHospitalizations() {
-        return totalHospitalizations;
+    public List<Covid19DailyAggregate> getCurrentHospitalizations() {
+        return currentHospitalizations;
     }
 
-    public void setTotalHospitalizations(List<Covid19DailyAggregate> totalHospitalizations) {
-        this.totalHospitalizations = totalHospitalizations;
+    public void setCurrentHospitalizations(List<Covid19DailyAggregate> currentHospitalizations) {
+        this.currentHospitalizations = currentHospitalizations;
     }
 }

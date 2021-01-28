@@ -17,14 +17,16 @@ public interface Covid19DataRepository extends JpaRepository<Covid19DataEntity, 
     Collection<Covid19DataEntity> findAllCovidDataByState(@Param("state") String state);
 
     @Query(value =
-            "select c.date as date, sum(c.positiveIncrease) as cases, sum(c.deathIncrease) as deaths, sum(c.hospitalizedIncrease) as hospitalized from Covid19DataEntity c\n" +
+            "select c.date as date, sum(c.positiveIncrease) as cases, sum(c.deathIncrease) as deaths, sum(c.hospitalizedCurrently) as hospitalized from Covid19DataEntity c\n" +
             "where c.date = (select max(c.date) from Covid19DataEntity c)\n" +
+            "and c.state in (:states)\n" +
             "group by c.date")
-    List<Map> findCurrentCovidAnalytics();
+    List<Map> findCurrentCovidAnalytics(@Param("states") List<String> states);
 
     @Query(value =
-            "select c.date as date, sum(c.positiveIncrease) as cases, sum(c.deathIncrease) as deaths, sum(c.hospitalizedIncrease) as hospitalized from Covid19DataEntity c\n" +
+            "select c.date as date, sum(c.positiveIncrease) as cases, sum(c.deathIncrease) as deaths, sum(c.hospitalizedCurrently) as hospitalized from Covid19DataEntity c\n" +
                     "where c.date in (:dates)\n" +
+                    "and c.state in (:states)\n" +
                     "group by c.date")
-    List<Map> findCovidAnalyticsByDates(@Param("dates") List<String> date);
+    List<Map> findCovidAnalyticsByDates(@Param("dates") List<String> date, @Param("states") List<String> states);
 }

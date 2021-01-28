@@ -2,15 +2,13 @@ package com.bhavik.services.covid19.api.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.time.LocalDate;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Covid19AnalyticsResponse {
 
 	private String date;
 	private Integer positiveIncrease;
 	private Integer deathIncrease;
-	private Integer hospitalizedIncrease;
+	private Integer hospitalizedCurrently;
 
 	public Covid19AnalyticsResponse() {
 		//Empty Constructor
@@ -20,7 +18,7 @@ public class Covid19AnalyticsResponse {
 		this.date = date;
 		this.positiveIncrease = positiveIncrease;
 		this.deathIncrease = deathIncrease;
-		this.hospitalizedIncrease = hospitalizedIncrease;
+		this.hospitalizedCurrently = hospitalizedIncrease;
 	}
 
 	public String getDate() {
@@ -47,11 +45,11 @@ public class Covid19AnalyticsResponse {
 		this.deathIncrease = deathIncrease;
 	}
 
-	public Integer getHospitalizedIncrease() {
-		return hospitalizedIncrease;
+	public Integer getHospitalizedCurrently() {
+		return hospitalizedCurrently;
 	}
 
-	public void setHospitalizedIncrease(Integer hospitalizedIncrease) {
-		this.hospitalizedIncrease = hospitalizedIncrease;
+	public void setHospitalizedCurrently(Integer hospitalizedCurrently) {
+		this.hospitalizedCurrently = hospitalizedCurrently;
 	}
 }

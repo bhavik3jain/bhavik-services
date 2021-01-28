@@ -76,7 +76,7 @@ public class Covid19DataConverter {
 
         response.setDate(data.get(Covid19DataType.DATE.getTypeName()) != null ? dateUtils.dateConverter(String.valueOf(data.get(Covid19DataType.DATE.getTypeName()))) : null);
         response.setPositiveIncrease(data.get(Covid19DataType.CASES.getTypeName()) != null ? Integer.valueOf(String.valueOf(data.get(Covid19DataType.CASES.getTypeName()))) : null);
-        response.setHospitalizedIncrease(data.get(Covid19DataType.HOSPITALIZED.getTypeName()) != null ? Integer.valueOf(String.valueOf(data.get(Covid19DataType.HOSPITALIZED.getTypeName()))) : null);
+        response.setHospitalizedCurrently(data.get(Covid19DataType.HOSPITALIZED.getTypeName()) != null ? Integer.valueOf(String.valueOf(data.get(Covid19DataType.HOSPITALIZED.getTypeName()))) : null);
         response.setDeathIncrease(data.get(Covid19DataType.DEATHS.getTypeName()) != null ? Integer.valueOf(String.valueOf(data.get(Covid19DataType.DEATHS.getTypeName()))) : null);
 
         return response;

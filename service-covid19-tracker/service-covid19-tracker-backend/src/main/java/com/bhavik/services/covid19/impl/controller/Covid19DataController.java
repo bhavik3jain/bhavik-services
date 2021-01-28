@@ -7,6 +7,7 @@ import com.bhavik.services.covid19.api.model.Covid19DailyResponse;
 import com.bhavik.services.covid19.api.model.getdata.request.Covid19DataRequest;
 import com.bhavik.services.covid19.api.model.getdata.response.Covid19DataResponse;
 import com.bhavik.services.covid19.api.service.ICovid19DataService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,9 @@ public class Covid19DataController implements ICovid19DataController {
 	}
 
 	@Override
-	public Covid19AnalyticsResponse getCovid19AnalyticsByDate(String date) {
+	public Covid19AnalyticsResponse getCovid19AnalyticsByDate(String date, String state) {
 		logger.debug("Retrieving covid analytics data for {}", date);
-		return covid19DataService.getCovid19Analytics(date);
+		return covid19DataService.getCovid19Analytics(date, StringUtils.upperCase(state));
 	}
 
 	@Override

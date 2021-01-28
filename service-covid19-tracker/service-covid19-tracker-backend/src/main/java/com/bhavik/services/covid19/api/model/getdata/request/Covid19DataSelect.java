@@ -7,7 +7,17 @@ import java.util.List;
 
 public class Covid19DataSelect {
 
-    List<Covid19DataType> types = new ArrayList<>();
+    private String state;
+
+    private List<Covid19DataType> types = new ArrayList<>();
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public List<Covid19DataType> getTypes() {
         return types;

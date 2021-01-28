@@ -20,7 +20,9 @@ public interface ICovid19DataController {
     ResponseEntity<String> createCovid19Data(@RequestBody List<Covid19CreateRequest> requestData);
 
     @GetMapping(path = "/read_analytics")
-    Covid19AnalyticsResponse getCovid19AnalyticsByDate(@RequestParam(value = "date", required = false) String date);
+    Covid19AnalyticsResponse getCovid19AnalyticsByDate(
+            @RequestParam(value = "date", required = false) String date,
+            @RequestParam(value = "state", required = false) String state);
 
     @PostMapping(path = "/analytics/multi_read")
     Covid19DataResponse getCovid19AnalyticsData(@RequestBody Covid19DataRequest dataRequest);
