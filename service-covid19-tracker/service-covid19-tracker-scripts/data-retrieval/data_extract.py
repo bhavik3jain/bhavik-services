@@ -49,13 +49,23 @@ state_metadata = requests.get("https://api.covidtracking.com/v1/states/info.json
 # Get All States to Process
 states = []
 for state in state_metadata.json():
-    states.append(state["state"])
+    states.append({
+        "state": state["state"],
+        "name": state["name"]
+    })
+
+state_submission_json = json.dumps(states)
+state_submission_json_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+submit_covid_data_api_response = requests.post(
+                                        url = "http://localhost:8083/states",
+                                        data = state_submission_json,
+                                        headers = state_submission_json_headers)
 
 
 # For each state, make API call to get historical data
 for state in states:
     state_data_request_uri = "https://api.covidtracking.com/v1/states/{state:s}/daily.json"
-    state_data_request_uri = state_data_request_uri.format(state = state)
+    state_data_request_uri = state_data_request_uri.format(state = state["state"])
     state_data_response = requests.get(state_data_request_uri)
 
     state_data_response = state_data_response.json()
