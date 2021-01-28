@@ -1,0 +1,20 @@
+server:
+  port: ${COVID_19_BE_PORT:8083}
+spring:
+  datasource:
+    url: jdbc:postgresql://${COVID19_DB_HOST:localhost}:5432/covid19_database
+    jdbc-url: ${spring.datasource.url}
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+    username: covid19_user_master
+    password: covid19_password_master
+  jpa:
+    properties:
+      hibernate:
+        default_schema: covid19_data
+      jdbc:
+        lob:
+          non_contextual_creation: true
+  h2:
+    console:
+      enabled: true
