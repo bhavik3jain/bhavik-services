@@ -2,7 +2,7 @@ server:
   port: ${COVID_19_BE_PORT:8083}
 spring:
   datasource:
-    url: jdbc:postgresql://${COVID19_DB_HOST:localhost}:5432/covid19_database
+    url: jdbc:postgresql://${COVID19_DB_HOST:localhost}:${COVID_DB_PORT:5432}/covid19_database
     jdbc-url: ${spring.datasource.url}
     driver-class-name: org.postgresql.Driver
     platform: postgres
