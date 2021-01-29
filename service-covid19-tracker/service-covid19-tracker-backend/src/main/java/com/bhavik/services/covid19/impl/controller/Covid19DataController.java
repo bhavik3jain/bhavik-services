@@ -44,7 +44,7 @@ public class Covid19DataController implements ICovid19DataController {
 
 	@Override
 	public Covid19DataResponse getCovid19AnalyticsData(@RequestBody Covid19DataRequest dataRequest) {
-		logger.debug("Retrieving Covid 19 Analytics Data");
+		logger.info("Retrieving Covid 19 Analytics Data");
 		return covid19DataService.getCovid19AnalyticsData(dataRequest);
 	}
 }
