@@ -2,11 +2,11 @@ server:
   port: ${COVID_19_BE_PORT:8083}
 spring:
   datasource:
-    url: jdbc:postgresql://${COVID19_DB_HOST:localhost}:${COVID_DB_PORT:5432}/${COVID_DB_NAME:covid19_database}
+    url: jdbc:postgresql://${COVID19_DB_HOST:34.75.154.154}:${COVID_DB_PORT:5432}/${COVID_DB_NAME:covid19_database}
     jdbc-url: ${spring.datasource.url}
     driver-class-name: org.postgresql.Driver
     platform: postgres
-    username: ${COVID19_DB_USER:covid19_user_master}
+    username: ${COVID19_DB_USER:postgres}
     password: ${COVID19_DB_PASSWORD:covid19_password_master}
   jpa:
     properties:
