@@ -109,7 +109,7 @@ public class Covid19DataService implements ICovid19DataService {
 		List<String> statesToRetrieve = getStates(StringUtils.upperCase(dataRequest.getSelect().getState()));
 
 		if(!CollectionUtils.isEmpty(dates)) {
-			logger.info("Retrieving analytics for the following dates {}", dates);
+			logger.info("Retrieving analytics for the following dates {} and following states {}", dates, statesToRetrieve);
 			List<Map> data = covid19DataRepository.findCovidAnalyticsByDates(dates, statesToRetrieve);
 
 			Covid19DataResponse response = generator.createCovid19DataResponse(dataRequest, data);
