@@ -15,7 +15,7 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    fetch('/states/')
+    fetch('/states')
       .then(results => results.json())
       .then(states => {
         this.setState({
