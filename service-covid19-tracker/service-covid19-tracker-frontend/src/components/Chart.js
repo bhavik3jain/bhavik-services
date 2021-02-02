@@ -18,7 +18,7 @@ class CovidChart extends Component {
       body: JSON.stringify(this.props.apiCall),
     };
 
-    fetch("/analytics/multi_read/", requestOptions)
+    fetch("http://api.thebhavikjain.com/analytics/multi_read/", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         this.setState({

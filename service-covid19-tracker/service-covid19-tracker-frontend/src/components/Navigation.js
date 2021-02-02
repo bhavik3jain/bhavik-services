@@ -15,7 +15,7 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    fetch('/states')
+    fetch('http://api.thebhavikjain.com/states')
       .then(results => results.json())
       .then(states => {
         this.setState({
@@ -39,7 +39,7 @@ renderLocation() {
 
   let links = locations.map((location) => {
 		let path = '/covid/'+location.abrev;
-		return <MDBNavItem key={location}><MDBNavLink onClick={this.toggleCollapse('navbarCollapse11')} to={path}>{location.state}</MDBNavLink></MDBNavItem>
+		return <MDBNavItem key={location.state}><MDBNavLink onClick={this.toggleCollapse('navbarCollapse11')} to={path}>{location.state}</MDBNavLink></MDBNavItem>
   })
 
   return links
@@ -57,10 +57,10 @@ render() {
             <MDBNavbarToggler image="https://mdbootstrap.com/img/svg/hamburger3.svg?color=000000" onClick={this.toggleCollapse('navbarCollapse11')} />
             <MDBCollapse id="navbarCollapse11" isOpen={this.state.collapseID} navbar>
               <MDBNavbarNav left>
-                <MDBNavItem active>
+                <MDBNavItem key='home' active>
                   <MDBNavLink onClick={this.toggleCollapse('navbarCollapse11')} to="/">Home</MDBNavLink>
                 </MDBNavItem>
-                <MDBNavItem>
+                <MDBNavItem key='us'>
                   <MDBNavLink onClick={this.toggleCollapse('navbarCollapse11')} to="/covid/us">United States</MDBNavLink>
                 </MDBNavItem>
 								{this.state && this.state.states && (this.renderLocation())}
