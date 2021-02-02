@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bhavik-covid19-backend-deployment
+  labels:
+    app: bhavik-covid19-backend
+    type: backend
+spec:
+  template:
+    metadata:
+      name: bhavik-covid19-backend-pod
+      labels:
+        app: bhavik-covid19-backend
+        type: backend
+    spec:
+      containers:
+        - name: covid19-backend
+          image: bhavik3jain/bhavik-services-covid19-backend:1.6
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8083
+          env:
+            - name: COVID_19_BE_PORT
+              value: '8083'
+            - name: COVID19_DB_HOST
+              value: 34.75.154.154
+            - name: COVID_DB_PORT
+              value: '5432'
+            - name: COVID_DB_NAME
+              value: covid19_database
+            - name: COVID19_DB_USER
+              value: postgres
+            - name: COVID19_DB_PASSWORD
+              value: covid19_password_master
+  replicas: 4
+  selector:
+    matchLabels:
+      type: backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bhavik-covid19-backend-service
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      targetPort: 8083
+      port: 8083
+  selector:
+    app: bhavik-covid19-backend
+    type: backend
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bhavik-covid19-backend-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "bhavik-covid19-backend"
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /data/*
+          backend:
+            serviceName: bhavik-covid19-backend-service
+            servicePort: 8083
+        - path: /states
+          backend:
+            serviceName: bhavik-covid19-backend-service
+            servicePort: 8083
+        - path: /analytics/*
+          backend:
+            serviceName: bhavik-covid19-backend-service
+            servicePort: 8083

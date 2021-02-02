@@ -57,7 +57,7 @@ for state in state_metadata.json():
 state_submission_json = json.dumps(states)
 state_submission_json_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 submit_covid_data_api_response = requests.post(
-                                        url = "http://localhost:8083/states",
+                                        url = "http://api.thebhavikjain.com/states",
                                         data = state_submission_json,
                                         headers = state_submission_json_headers)
 
@@ -84,6 +84,6 @@ for state in states:
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
     submit_covid_data_api_response = requests.post(
-                                            url = "http://localhost:8083/multi_create",
+                                            url = "http://api.thebhavikjain.com/data/multi_create",
                                             data = data_submission_json,
                                             headers = headers)
