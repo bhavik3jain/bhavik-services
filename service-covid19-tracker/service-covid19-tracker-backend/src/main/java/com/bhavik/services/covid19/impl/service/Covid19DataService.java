@@ -77,6 +77,7 @@ public class Covid19DataService implements ICovid19DataService {
 				covid19DataRepository.saveAll(map);
 			} catch (Exception e) {
 				logger.error("Error when saving covid data");
+				throw e;
 			}
 		});
 	}
