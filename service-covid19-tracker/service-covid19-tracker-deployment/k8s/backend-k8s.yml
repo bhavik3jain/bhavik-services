@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: covid19-backend
-          image: bhavik3jain/bhavik-services-covid19-backend:1.6
+          image: bhavik3jain/bhavik-services-covid19-backend:1.7
           imagePullPolicy: "Always"
           ports:
             - containerPort: 8083
@@ -52,6 +52,7 @@ spec:
     app: bhavik-covid19-backend
     type: backend
 ---
+##### gcloud compute addresses create bhavik-covid19-backend --global 
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -62,6 +63,10 @@ spec:
   rules:
   - http:
       paths:
+        - path: /
+          backend:
+            serviceName: bhavik-covid19-backend-service
+            servicePort: 8083
         - path: /data/*
           backend:
             serviceName: bhavik-covid19-backend-service

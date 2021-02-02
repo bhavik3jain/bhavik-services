@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bhavik-covid19-frontend-deployment
+  labels:
+    app: bhavik-covid19-frontend
+    type: frontend
+spec:
+  template:
+    metadata:
+      name: bhavik-covid19-frontend-pod
+      labels:
+        app: bhavik-covid19-frontend
+        type: frontend
+    spec:
+      containers:
+        - name: covid19-frontend
+          image: bhavik3jain/bhavik-services-covid19-frontend:1.8
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 80
+  replicas: 4
+  selector:
+    matchLabels:
+      type: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bhavik-covid19-frontend-service
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      targetPort: 80
+      port: 80
+  selector:
+    app: bhavik-covid19-frontend
+    type: frontend
+---
+##### gcloud compute addresses create bhavik-covid19-frontend --global
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bhavik-covid19-frontend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /*
+          backend:
+            serviceName: bhavik-covid19-frontend-service
+            servicePort: 80
