@@ -14,12 +14,15 @@ import java.util.List;
 public interface ICovid19DataController {
 
     @GetMapping(path = "/")
+    ResponseEntity<String> getHealthCheck();
+
+    @GetMapping(path = "/analytics")
     List<Covid19DailyResponse> getAllCovid19Data();
 
-    @PostMapping(path = "/multi_create")
+    @PostMapping(path = "/data/multi_create")
     ResponseEntity<String> createCovid19Data(@RequestBody List<Covid19CreateRequest> requestData);
 
-    @GetMapping(path = "/read_analytics")
+    @GetMapping(path = "/analytics/read_analytics")
     Covid19AnalyticsResponse getCovid19AnalyticsByDate(
             @RequestParam(value = "date", required = false) String date,
             @RequestParam(value = "state", required = false) String state);
