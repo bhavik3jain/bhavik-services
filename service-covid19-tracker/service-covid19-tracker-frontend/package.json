@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8083",
+  "proxy": "http://api.thebhavikjain.com",
   "dependencies": {
     "@babel/core": "7.5.5",
     "@material-ui/core": "^4.11.2",

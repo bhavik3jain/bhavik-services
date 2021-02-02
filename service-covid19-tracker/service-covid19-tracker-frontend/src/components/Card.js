@@ -15,7 +15,7 @@ function CovidCard(props) {
   useEffect(() => {
     let state = props.location == 'us' ? '' : props.location
 
-    fetch('/read_analytics/?state='+state)
+    fetch('/analytics/read_analytics/?state='+state)
       .then(results => results.json())
       .then(covid_daily => {
         setCovidDaily(covid_daily);

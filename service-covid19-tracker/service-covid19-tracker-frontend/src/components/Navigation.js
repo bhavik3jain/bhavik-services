@@ -13,7 +13,7 @@ class Navbar extends Component {
     super(props);
     this.props = props;
   }
-  
+
   componentDidMount() {
     fetch('/states/')
       .then(results => results.json())
@@ -41,7 +41,7 @@ renderLocation() {
 		let path = '/covid/'+location.abrev;
 		return <MDBNavItem key={location}><MDBNavLink onClick={this.toggleCollapse('navbarCollapse11')} to={path}>{location.state}</MDBNavLink></MDBNavItem>
   })
-  
+
   return links
 
 }
