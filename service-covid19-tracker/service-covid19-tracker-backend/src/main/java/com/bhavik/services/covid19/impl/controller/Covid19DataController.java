@@ -26,11 +26,6 @@ public class Covid19DataController implements ICovid19DataController {
 	ICovid19DataService covid19DataService;
 
 	@Override
-	public ResponseEntity<String> getHealthCheck() {
-		return ResponseEntity.ok().build();
-	}
-
-	@Override
 	public List<Covid19DailyResponse> getAllCovid19Data() {
 		return covid19DataService.getAllCovid19Data();
 	}

@@ -13,9 +13,6 @@ import java.util.List;
 @RestController
 public interface ICovid19DataController {
 
-    @GetMapping(path = "/")
-    ResponseEntity<String> getHealthCheck();
-
     @GetMapping(path = "/analytics")
     List<Covid19DailyResponse> getAllCovid19Data();
 
