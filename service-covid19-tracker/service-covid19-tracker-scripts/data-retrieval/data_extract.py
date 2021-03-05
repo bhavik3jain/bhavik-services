@@ -87,3 +87,6 @@ for state in states:
                                             url = "http://api.thebhavikjain.com/data/multi_create",
                                             data = data_submission_json,
                                             headers = headers)
+
+
+# docker run -d --name covid19_data_extract covid19_data_extract

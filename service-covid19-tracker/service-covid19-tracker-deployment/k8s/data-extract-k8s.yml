@@ -1,0 +1,15 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: bhavik-covid19-data-extract
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: bhavik-covid19-data-extract
+            image: bhavik3jain/covid19_data_extract:1.0
+            imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
